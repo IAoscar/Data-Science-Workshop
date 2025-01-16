@@ -1,0 +1,106 @@
+---
+title: "Data Science Workshop Template"
+author: "STEM Success Team"
+date: "2025-02-20"
+output: html_document
+---
+
+```{r}
+df <- read.csv("/Users/oscarescobar/Desktop/Student_Performance.csv", header = TRUE)
+```
+
+```{r}
+str(df)
+```
+
+Check for total missing values and in what columns they reside in
+```{r}
+sum(is.na(df))
+
+colSums(is.na(df))
+
+nrow(df)
+```
+
+Use na.omit to remove rows with missing data
+```{r}
+noMissingValues_df <- na.omit(df)
+
+nrow(noMissingValues_df)
+```
+
+How many duplicates?
+```{r}
+dupeSum <- sum(duplicated(noMissingValues_df))
+dupeSum
+```
+
+Remove duplicates
+```{r}
+noDupes_df <- unique(noMissingValues_df)
+
+rowCount <- nrow(noDupes_df)
+rowCount
+```
+
+```{r}
+print(head(noDupes_df))
+```
+
+
+Binary encoding 
+```{r}
+binaryEncoded_df <-noDupes_df
+binaryEncoded_df$Extracurricular.Activities <- ifelse(binaryEncoded_df$Extracurricular.Activities == "Yes", 1, 0)
+
+clean_df <- binaryEncoded_df
+print(head(clean_df))
+```
+
+
+Remove target variable for multicollinearity analysis
+```{r}
+variable_df <- clean_df[, !names(clean_df) %in% 'Performance.Index']
+print(head(variable_df))
+```
+Create correlation matrix
+```{r}
+corrmat <- cor(variable_df)
+print(corrmat)
+```
+
+Creat heatmap for better visualization
+```{r}
+library(corrplot)
+corrplot(corrmat, method = "color", type = "full", 
+         col = colorRampPalette(c("red", "gold", "blue"))(200),
+         tl.cex = 0.6, tl.col = "black", title = "Correlation Heatmap")
+```
+
+```{r}
+studyTime <- clean_df$Hours.Studied
+scores <- clean_df$Previous.Scores
+extra <- clean_df$Extracurricular.Activities
+sleep <- clean_df$Sleep.Hours
+practice <- clean_df$Sample.Question.Papers.Practiced
+grade <- clean_df$Performance.Index
+
+model <- lm(grade ~ studyTime + scores + extra + sleep + practice, data = clean_df)
+
+summary(model)
+```
+
+```{r}
+plot(model)
+```
+Variance Inflation Factors (VIF)
+```{r}
+library(car)
+vif(model)
+```
+
+
+
+
+
+
