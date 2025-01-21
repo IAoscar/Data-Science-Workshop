@@ -5,68 +5,69 @@ date: "2025-02-20"
 output: html_document
 ---
 
+Import data
 ```{r}
-df <- read.csv("/Users/oscarescobar/Desktop/Student_Performance.csv", header = TRUE)
+df <- read.csv("pathtofile", header = TRUE)
 ```
 
 ```{r}
-str(df)
+str()
 ```
 
 Check for total missing values and in what columns they reside in
 ```{r}
-sum(is.na(df))
+sum()
 
-colSums(is.na(df))
+colSums()
 
-nrow(df)
+nrow()
 ```
 
 Use na.omit to remove rows with missing data
 ```{r}
-noMissingValues_df <- na.omit(df)
+noMissingValues_df <- na.omit()
 
-nrow(noMissingValues_df)
+nrow()
 ```
 
 How many duplicates?
 ```{r}
-dupeSum <- sum(duplicated(noMissingValues_df))
+dupeSum <- sum()
 dupeSum
 ```
 
 Remove duplicates
 ```{r}
-noDupes_df <- unique(noMissingValues_df)
+noDupes_df <- unique()
 
-rowCount <- nrow(noDupes_df)
+rowCount <- nrow()
 rowCount
 ```
 
 ```{r}
-print(head(noDupes_df))
+print()
 ```
 
 
 Binary encoding 
 ```{r}
-binaryEncoded_df <-noDupes_df
-binaryEncoded_df$Extracurricular.Activities <- ifelse(binaryEncoded_df$Extracurricular.Activities == "Yes", 1, 0)
+binaryEncoded_df <- noDupes_df
+binaryEncoded_df$Extracurricular.Activities <- ifelse()
 
 clean_df <- binaryEncoded_df
-print(head(clean_df))
+print()
 ```
 
 
 Remove target variable for multicollinearity analysis
 ```{r}
-variable_df <- clean_df[, !names(clean_df) %in% 'Performance.Index']
-print(head(variable_df))
+variable_df <- clean_df[, !names(clean_df) %in% '']
+print()
 ```
 Create correlation matrix
 ```{r}
-corrmat <- cor(variable_df)
-print(corrmat)
+corrmat <- 
+print()
 ```
 
 Creat heatmap for better visualization
@@ -77,19 +78,21 @@ corrplot(corrmat, method = "color", type = "full",
          tl.cex = 0.6, tl.col = "black", title = "Correlation Heatmap")
 ```
 
+Build model
 ```{r}
-studyTime <- clean_df$Hours.Studied
-scores <- clean_df$Previous.Scores
-extra <- clean_df$Extracurricular.Activities
-sleep <- clean_df$Sleep.Hours
-practice <- clean_df$Sample.Question.Papers.Practiced
-grade <- clean_df$Performance.Index
+studyTime <- 
+scores <- 
+extra <- 
+sleep <- 
+practice <- 
+grade <- 
 
-model <- lm(grade ~ studyTime + scores + extra + sleep + practice, data = clean_df)
+model <- lm()
 
 summary(model)
 ```
 
+Plot model
 ```{r}
 plot(model)
 ```
