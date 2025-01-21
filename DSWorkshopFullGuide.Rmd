@@ -4,8 +4,10 @@ author: "STEM Success Team"
 date: "2025-02-20"
 output: html_document
 ---
+Don't forget to replace "pathtofile" with your own file path to the dataset on your PC! 
+Import data 
 ```{r}
-df <- read.csv("/Users/oscarescobar/Desktop/Student_Performance.csv", header = TRUE)
+df <- read.csv("pathtofile", header = TRUE)
 ```
 
 ```{r}
@@ -75,7 +77,7 @@ corrplot(corrmat, method = "color", type = "full",
          tl.cex = 0.6, tl.col = "black", title = "Correlation Heatmap")
 ```
 
-Model setup
+Build model
 ```{r}
 studyTime <- clean_df$Hours.Studied
 scores <- clean_df$Previous.Scores
